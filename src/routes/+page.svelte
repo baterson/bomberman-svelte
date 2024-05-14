@@ -1,2 +1,7 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	import Sprite from '$lib/components/Sprite.svelte';
+	import { Manager } from '$lib/entities/Manager.svelte';
+	import { tileMap } from '$lib/tilemap.ts';
+</script>
+
+<div></div>
