@@ -1,7 +1,7 @@
 <script>
 	import Sprite from '$lib/components/Sprite.svelte';
+	import Map from '$lib/components/Map.svelte';
 	import { entityManager, keyboardManager } from '$lib/managers';
-	import { tileMap } from '$lib/tilemap.ts';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
@@ -11,6 +11,16 @@
 	});
 </script>
 
-<div>
+<div class="container">
+	<Map />
 	<Sprite name="player" spritePosition={[0, 0]} position={entityManager.entities.player.position} />
 </div>
+
+<style>
+	.container {
+		background-color: rgb(78, 133, 37);
+		width: 620px;
+		height: 620px;
+		position: relative;
+	}
+</style>

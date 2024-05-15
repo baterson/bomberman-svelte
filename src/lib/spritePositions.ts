@@ -1,4 +1,4 @@
-export const tileMap = {
+export const spritePositions = {
     player: {
         left: [[64, 0], [32, 0], [0, 0]],
         right: [
@@ -23,8 +23,8 @@ export const tileMap = {
         l: [64, 192]
     },
     wall: {
-        still: [0, 224],
-        brick: [32, 224],
-        brickExplosion: [[64, 224], [96, 224], [128, 224], [160, 224]]
+        still: [96, 96],
+        brick: [128, 96],
+        brickExplosion: [[96, 164],]
     },
 }

@@ -2,6 +2,8 @@
 	export let name;
 	export let position;
 	export let spritePosition;
+
+	// todo spritePosition from name
 </script>
 
 <div
