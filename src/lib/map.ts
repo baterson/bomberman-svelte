@@ -21,7 +21,7 @@ export function generateStaticMap(size) {
     // Randomly place Brick tiles inside the map, leaving the edges as Still tiles
     for (let y = 1; y < size - 1; y++) {
         for (let x = 1; x < size - 1; x++) {
-            map[y][x] = Math.random() < 0.3 ? 0 : null; // 30% chance for Brick, 70% for empty
+            map[y][x] = Math.random() < 0.2 ? 0 : null; // 30% chance for Brick, 70% for empty
         }
     }
 

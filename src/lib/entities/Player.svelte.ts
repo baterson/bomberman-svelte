@@ -1,15 +1,13 @@
+import { Entity } from "./Entity.svelte";
 import { ControlKeys } from "$lib/managers/KeyboardManager.svelte";
 
-export class Player {
+export class Player extends Entity {
     displayName = 'player'
-    position = $state([100, 100]);
-
-    constructor() {
-        // this.pos = text;
-    }
+    prevPosition = $state(null)
 
     move = (direction) => {
         const [x, y] = this.position;
+        this.prevPosition = [x, y];
 
         if (direction === 'up') {
             this.position = [x, y - 10];
@@ -22,8 +20,8 @@ export class Player {
         }
     }
 
-    update = (entityManager) => {
-        const key = entityManager.keyboardManager.getKey();
+    checkInput = (keyboardManager) => {
+        const key = keyboardManager.getKey();
 
         if (key === ControlKeys.ArrowUp) {
             this.move('up');
@@ -33,6 +31,19 @@ export class Player {
             this.move('down');
         } else if (key === ControlKeys.ArrowLeft) {
             this.move('left');
+        }
+    }
+
+    update = (entityManager) => {
+        const { keyboardManager, mapManager } = entityManager;
+
+        this.checkInput(keyboardManager)
+
+        const isCollideWithMap = mapManager.checkMapCollision(this);
+
+        console.log('isCollideWithMap', isCollideWithMap);
+        if (isCollideWithMap) {
+            this.position = this.prevPosition;
         }
     }
 }

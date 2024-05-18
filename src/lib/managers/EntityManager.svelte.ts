@@ -4,10 +4,11 @@ export class EntityManager {
     entities = $state({});
     staticEntities = $state({});
 
-    constructor(keyboardManager) {
+    constructor(keyboardManager, mapManager) {
         this.keyboardManager = keyboardManager;
+        this.mapManager = mapManager;
 
-        const player = new Player();
+        const player = new Player([100, 100]);
 
         this.entities = {
             [player.displayName]: player,

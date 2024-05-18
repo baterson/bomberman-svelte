@@ -1,15 +1,12 @@
 import { Player } from '$lib/entities/Player.svelte';
 import { generateStaticMap } from '$lib/map';
+import { checkMapCollision } from '$lib/collisions';
 
 export class MapManager {
     map = $state(generateStaticMap(20));
 
-    constructor() {
-        const player = new Player();
-
-        this.entities = {
-            [player.displayName]: player,
-        }
+    checkMapCollision = (entity) => {
+        return checkMapCollision(this.map, entity);
     }
 
     update = () => {
