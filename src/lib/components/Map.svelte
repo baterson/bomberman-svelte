@@ -1,7 +1,8 @@
 <script>
-	import { mapManager } from '$lib/managers';
 	import { spritePositions } from '$lib/spritePositions';
 	import Sprite from '$lib/components/Sprite.svelte';
+
+	const { mapManager } = $props();
 
 	const tileSize = 32;
 </script>

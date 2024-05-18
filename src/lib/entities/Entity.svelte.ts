@@ -4,6 +4,8 @@ export class Entity {
     position = $state(null);
 
     constructor(position) {
+        console.log('position', position);
+
         this.position = position;
         // this.pos = text;
     }

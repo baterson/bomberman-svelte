@@ -4,22 +4,17 @@ export class EntityManager {
     entities = $state({});
     staticEntities = $state({});
 
-    constructor(keyboardManager, mapManager) {
-        this.keyboardManager = keyboardManager;
-        this.mapManager = mapManager;
-
-        const player = new Player([100, 100]);
+    constructor() {
+        const player = new Player([32, 32]);
 
         this.entities = {
             [player.displayName]: player,
         }
     }
 
-    update = () => {
+    update = (stage) => {
         Object.values(this.entities).forEach(entity => {
-            entity.update(this);
+            entity.update(stage);
         });
-
-        requestAnimationFrame(this.update);
     }
 }

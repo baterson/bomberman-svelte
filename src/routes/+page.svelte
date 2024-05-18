@@ -1,19 +1,25 @@
 <script>
 	import Sprite from '$lib/components/Sprite.svelte';
 	import Map from '$lib/components/Map.svelte';
-	import { entityManager, keyboardManager } from '$lib/managers';
+	import { Stage } from '$lib/Stage.svelte';
 	import { onMount } from 'svelte';
 
-	onMount(() => {
-		keyboardManager.listenToEvents();
+	let stage;
 
-		entityManager.update();
+	onMount(() => {
+		stage = new Stage();
 	});
 </script>
 
 <div class="container">
-	<Map />
-	<Sprite name="player" spritePosition={[0, 0]} position={entityManager.entities.player.position} />
+	{#if stage}
+		<Map mapManager={stage.managers.mapManager} />
+		<Sprite
+			name="player"
+			spritePosition={[0, 0]}
+			position={stage.managers.entityManager.entities.player.position}
+		/>
+	{/if}
 </div>
 
 <style>
