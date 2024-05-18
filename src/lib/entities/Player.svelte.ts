@@ -5,40 +5,41 @@ export class Player extends Entity {
     displayName = 'player';
     prevPosition = $state(null);
     direction = 'right';
-    velocity = 5
+    velocity = 300
 
     constructor(position) {
         super(position);
         this.prevPosition = position;
     }
 
-    move = (direction) => {
+    move = (direction, deltaTime) => {
         const [x, y] = this.position;
         this.prevPosition = [x, y];
         this.direction = direction;
+        const speed = this.velocity * deltaTime;
 
         if (direction === 'up') {
-            this.position = [x, y - this.velocity];
+            this.position = [x, y - speed];
         } else if (direction === 'right') {
-            this.position = [x + this.velocity, y];
+            this.position = [x + speed, y];
         } else if (direction === 'down') {
-            this.position = [x, y + this.velocity];
+            this.position = [x, y + speed];
         } else if (direction === 'left') {
-            this.position = [x - this.velocity, y];
+            this.position = [x - speed, y];
         }
     }
 
-    checkInput = (keyboardManager) => {
+    checkInput = (keyboardManager, deltaTime) => {
         const key = keyboardManager.getKey();
 
         if (key === ControlKeys.ArrowUp) {
-            this.move('up');
+            this.move('up', deltaTime);
         } else if (key === ControlKeys.ArrowRight) {
-            this.move('right');
+            this.move('right', deltaTime);
         } else if (key === ControlKeys.ArrowDown) {
-            this.move('down');
+            this.move('down', deltaTime);
         } else if (key === ControlKeys.ArrowLeft) {
-            this.move('left');
+            this.move('left', deltaTime);
         }
     }
 
@@ -89,8 +90,12 @@ export class Player extends Entity {
 
     update = (stage) => {
         const { keyboardManager, mapManager } = stage.managers;
+        const { deltaTime } = stage;
 
-        this.checkInput(keyboardManager);
+        console.log('deltaTime', deltaTime);
+
+
+        this.checkInput(keyboardManager, deltaTime);
 
         const isCollideWithMap = mapManager.checkMapCollision(this);
 

@@ -14,12 +14,16 @@ export class Stage {
 
         this.lastFrameTime = 0;
 
-        this.update(0)
+        requestAnimationFrame(this.update);
     }
 
     update = (timestamp) => {
+        console.log('timestamp', timestamp);
+
         if (timestamp - this.lastFrameTime >= FRAME_DURATION) {
+            this.deltaTime = (timestamp - this.lastFrameTime) / 1000; // Convert to seconds
             this.lastFrameTime = timestamp;
+
             this.entityManager.update(this);
         }
 
