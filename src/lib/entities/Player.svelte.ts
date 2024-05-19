@@ -40,7 +40,7 @@ export class Player extends Entity {
         this.state = 'move';
     }
 
-    checkInput = (keyboardManager, deltaTime) => {
+    checkInput = (entityManager, keyboardManager, deltaTime) => {
         const key = keyboardManager.getKey();
 
         if (key === ControlKeys.ArrowUp) {
@@ -53,6 +53,10 @@ export class Player extends Entity {
             this.move('left', deltaTime);
         } else {
             this.state = 'idle';
+        }
+
+        if (key === ControlKeys.Space) {
+            entityManager.spawnBomb(this.position)
         }
 
     }
@@ -103,10 +107,10 @@ export class Player extends Entity {
     }
 
     update = (stage) => {
-        const { keyboardManager, mapManager } = stage.managers;
+        const { keyboardManager, entityManager, mapManager } = stage.managers;
         const { deltaTime } = stage;
 
-        this.checkInput(keyboardManager, deltaTime);
+        this.checkInput(entityManager, keyboardManager, deltaTime);
 
         if (this.state === 'move') {
             this.animationElapsedTime += deltaTime;

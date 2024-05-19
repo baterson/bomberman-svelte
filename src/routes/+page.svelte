@@ -4,19 +4,35 @@
 	import Map from '$lib/components/Map.svelte';
 	import { Stage } from '$lib/Stage.svelte';
 	import { onMount } from 'svelte';
+	import { spritePositions } from '$lib/spritePositions';
 
 	let stage;
 
 	onMount(() => {
 		stage = new Stage();
 	});
+
+	const getPlayerSprite = () => {
+		const player = stage.managers.entityManager.player;
+		return spritePositions[player.label][player.direction][player.frame];
+	};
+
+	const getBombSprite = (bomb) => {
+		return spritePositions[bomb.label][bomb.frame];
+	};
 </script>
 
 <div class="container">
 	{#if stage}
 		<Map mapManager={stage.managers.mapManager} />
-		{#each Object.values(stage.managers.entityManager.entities) as entity}
-			<AnimatedSprite {entity} time={stage.time} />
+		<AnimatedSprite
+			z={5}
+			position={stage.managers.entityManager.player.position}
+			spritePosition={getPlayerSprite()}
+		/>
+
+		{#each stage.managers.entityManager.bombs as bomb}
+			<AnimatedSprite z={1} position={bomb.position} spritePosition={getBombSprite(bomb)} />
 		{/each}
 	{/if}
 </div>

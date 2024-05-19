@@ -1,7 +1,5 @@
-export class Still {
-    position = $state([]);
+import { Entity } from "./Entity.svelte";
 
-    constructor(position) {
-        this.position = position;
-    }
+export class Still extends Entity {
+    label = 'still'
 }

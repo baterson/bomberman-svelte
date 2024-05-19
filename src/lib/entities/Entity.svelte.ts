@@ -1,14 +1,12 @@
-import { ControlKeys } from "$lib/managers/KeyboardManager.svelte";
-
 export class Entity {
     position = $state(null);
 
     constructor(position) {
-        console.log('position', position);
-
         this.position = position;
         // this.pos = text;
     }
+
+    update = (stage) => { }
 
     get boundingBox() {
         const [x, y] = this.position;

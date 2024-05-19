@@ -1,21 +1,10 @@
 <script>
-	import { spritePositions } from '$lib/spritePositions';
-
-	const { entity, time } = $props();
-	let frame = $state(0);
-	let lastFrameTime = $state(0);
-	const frameDuration = 0.1;
-	console.log('entity.frame', entity.frame);
-	const sprite = spritePositions[entity.label];
-	const _sp = $derived(sprite[entity.direction][entity.frame]);
-
-	console.log('sp', _sp);
+	const { spritePosition, position, z } = $props();
 </script>
 
 <div
 	class="sprite"
-	style="background-position: {-_sp[0]}px {-_sp[1]}px; left: {entity.position[0]}px; top: {entity
-		.position[1]}px;"
+	style="z-index: {z}; background-position: {-spritePosition[0]}px {-spritePosition[1]}px; left: {position[0]}px; top: {position[1]}px;"
 ></div>
 
 <style>

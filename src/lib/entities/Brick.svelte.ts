@@ -1,10 +1,7 @@
-export class Brick {
-    displayName = 'brick'
-    position = $state([]);
+import { Entity } from "./Entity.svelte";
 
-    constructor(position) {
-        this.position = position;
-    }
+export class Brick extends Entity {
+    label = 'brick'
 }
 
 
