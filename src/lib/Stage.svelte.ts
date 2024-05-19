@@ -13,15 +13,15 @@ export class Stage {
         this.keyboardManager.listenToEvents();
 
         this.lastFrameTime = 0;
+        this.time = 0; // in seconds
 
         requestAnimationFrame(this.update);
     }
 
     update = (timestamp) => {
-        console.log('timestamp', timestamp);
-
         if (timestamp - this.lastFrameTime >= FRAME_DURATION) {
             this.deltaTime = (timestamp - this.lastFrameTime) / 1000; // Convert to seconds
+            this.time += this.deltaTime;
             this.lastFrameTime = timestamp;
 
             this.entityManager.update(this);

@@ -1,5 +1,6 @@
 <script>
 	import Sprite from '$lib/components/Sprite.svelte';
+	import AnimatedSprite from '$lib/components/AnimatedSprite.svelte';
 	import Map from '$lib/components/Map.svelte';
 	import { Stage } from '$lib/Stage.svelte';
 	import { onMount } from 'svelte';
@@ -14,11 +15,9 @@
 <div class="container">
 	{#if stage}
 		<Map mapManager={stage.managers.mapManager} />
-		<Sprite
-			name="player"
-			spritePosition={[0, 0]}
-			position={stage.managers.entityManager.entities.player.position}
-		/>
+		{#each Object.values(stage.managers.entityManager.entities) as entity}
+			<AnimatedSprite {entity} time={stage.time} />
+		{/each}
 	{/if}
 </div>
 

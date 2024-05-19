@@ -1,10 +1,19 @@
 import { Entity } from "./Entity.svelte";
 import { ControlKeys } from "$lib/managers/KeyboardManager.svelte";
 
+function getAnimationIndex(animationLength, framesTotal, elapsedTime, frameDuration) {
+    const totalFramesPassed = elapsedTime / frameDuration;
+    return Math.floor(totalFramesPassed) % animationLength;
+}
+
+
 export class Player extends Entity {
-    displayName = 'player';
+    label = 'player';
     prevPosition = $state(null);
-    direction = 'right';
+    direction = $state('right');
+    state = $state('idle');
+    frame = $state(0);
+    animationElapsedTime = 0;
     velocity = 300
 
     constructor(position) {
@@ -27,6 +36,8 @@ export class Player extends Entity {
         } else if (direction === 'left') {
             this.position = [x - speed, y];
         }
+
+        this.state = 'move';
     }
 
     checkInput = (keyboardManager, deltaTime) => {
@@ -40,7 +51,10 @@ export class Player extends Entity {
             this.move('down', deltaTime);
         } else if (key === ControlKeys.ArrowLeft) {
             this.move('left', deltaTime);
+        } else {
+            this.state = 'idle';
         }
+
     }
 
     getFrontCollisionPoints = () => {
@@ -81,7 +95,7 @@ export class Player extends Entity {
             }
         }
 
-        if (Math.abs(diff) < 5) {
+        if (Math.abs(diff) < 6) {
             return destination;
         }
 
@@ -92,10 +106,16 @@ export class Player extends Entity {
         const { keyboardManager, mapManager } = stage.managers;
         const { deltaTime } = stage;
 
-        console.log('deltaTime', deltaTime);
-
-
         this.checkInput(keyboardManager, deltaTime);
+
+        if (this.state === 'move') {
+            this.animationElapsedTime += deltaTime;
+            const framesTotal = 3;
+            this.frame = getAnimationIndex(framesTotal, framesTotal, this.animationElapsedTime, 0.1);
+        } else {
+            this.frame = 0
+            this.animationElapsedTime = 0
+        }
 
         const isCollideWithMap = mapManager.checkMapCollision(this);
 
