@@ -14,10 +14,14 @@ export class EntityManager {
         this.bombs.forEach(bomb => bomb.update(stage))
     }
 
-    spawnBomb = (position) => {
+    spawnBomb = (position, timeManager) => {
         if (this.bombs.length > 1) return
 
         const bomb = new Bomb(position)
         this.bombs.push(bomb)
+
+        timeManager.setTimer(bomb.id, 3000, () => {
+            this.bombs = this.bombs.filter(b => b.id !== bomb.id)
+        })
     }
 }

@@ -2,8 +2,8 @@ export class Entity {
     position = $state(null);
 
     constructor(position) {
+        this.id = Date.now() - Math.floor(Math.random() * 100)
         this.position = position;
-        // this.pos = text;
     }
 
     update = (stage) => { }

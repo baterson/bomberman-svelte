@@ -11,15 +11,6 @@
 	onMount(() => {
 		stage = new Stage();
 	});
-
-	const getPlayerSprite = () => {
-		const player = stage.managers.entityManager.player;
-		return spritePositions[player.label][player.direction][player.frame];
-	};
-
-	const getBombSprite = (bomb) => {
-		return spritePositions[bomb.label][bomb.frame];
-	};
 </script>
 
 <div class="container">
@@ -28,14 +19,18 @@
 		<AnimatedSprite
 			z={5}
 			position={stage.managers.entityManager.player.position}
-			spritePosition={getPlayerSprite()}
+			spritePosition={stage.managers.entityManager.player.sprite}
 		/>
 
 		{#each stage.managers.entityManager.bombs as bomb}
-			<AnimatedSprite z={1} position={bomb.position} spritePosition={getBombSprite(bomb)} />
+			<AnimatedSprite z={1} position={bomb.position} spritePosition={bomb.sprite} />
 		{/each}
 	{/if}
 </div>
+
+{#if stage}
+	<h1>{stage.managers.timeManager.timeInSeconds}</h1>
+{/if}
 
 <style>
 	.container {

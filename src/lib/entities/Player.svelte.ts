@@ -1,19 +1,13 @@
 import { Entity } from "./Entity.svelte";
 import { ControlKeys } from "$lib/managers/KeyboardManager.svelte";
-
-function getAnimationIndex(animationLength, framesTotal, elapsedTime, frameDuration) {
-    const totalFramesPassed = elapsedTime / frameDuration;
-    return Math.floor(totalFramesPassed) % animationLength;
-}
-
+import { SpriteManager } from "$lib/managers/SpriteManager.svelte";
 
 export class Player extends Entity {
     label = 'player';
     prevPosition = $state(null);
     direction = $state('right');
     state = $state('idle');
-    frame = $state(0);
-    animationElapsedTime = 0;
+    spriteManager = new SpriteManager('player_right', 1)
     velocity = 300
 
     constructor(position) {
@@ -21,8 +15,25 @@ export class Player extends Entity {
         this.prevPosition = position;
     }
 
+    get sprite() {
+        return this.spriteManager.sprite
+    }
+
+    changeState = (state) => {
+        if (state === 'move') {
+            this.spriteManager.setSprite(`player_${this.direction}`, 3)
+        } else {
+            this.spriteManager.setSprite(`player_${this.direction}`, 1)
+        }
+    }
+
     move = (direction, deltaTime) => {
         const [x, y] = this.position;
+
+        if (direction !== this.direction || this.state === 'idle') {
+            this.spriteManager.setSprite(`player_${this.direction}`, 3)
+        }
+
         this.prevPosition = [x, y];
         this.direction = direction;
         const speed = this.velocity * deltaTime;
@@ -37,26 +48,28 @@ export class Player extends Entity {
             this.position = [x - speed, y];
         }
 
-        this.state = 'move';
+
+        this.state = 'move'
     }
 
-    checkInput = (entityManager, keyboardManager, deltaTime) => {
+    checkInput = (entityManager, keyboardManager, timeManager) => {
         const key = keyboardManager.getKey();
 
         if (key === ControlKeys.ArrowUp) {
-            this.move('up', deltaTime);
+            this.move('up', timeManager.deltaTime);
         } else if (key === ControlKeys.ArrowRight) {
-            this.move('right', deltaTime);
+            this.move('right', timeManager.deltaTime);
         } else if (key === ControlKeys.ArrowDown) {
-            this.move('down', deltaTime);
+            this.move('down', timeManager.deltaTime);
         } else if (key === ControlKeys.ArrowLeft) {
-            this.move('left', deltaTime);
+            this.move('left', timeManager.deltaTime);
         } else {
-            this.state = 'idle';
+            this.state = 'idle'
+            this.spriteManager.setSprite(`player_${this.direction}`, 1)
         }
 
         if (key === ControlKeys.Space) {
-            entityManager.spawnBomb(this.position)
+            entityManager.spawnBomb(this.position, timeManager)
         }
 
     }
@@ -107,19 +120,9 @@ export class Player extends Entity {
     }
 
     update = (stage) => {
-        const { keyboardManager, entityManager, mapManager } = stage.managers;
-        const { deltaTime } = stage;
+        const { keyboardManager, entityManager, timeManager, mapManager } = stage.managers;
 
-        this.checkInput(entityManager, keyboardManager, deltaTime);
-
-        if (this.state === 'move') {
-            this.animationElapsedTime += deltaTime;
-            const framesTotal = 3;
-            this.frame = getAnimationIndex(framesTotal, framesTotal, this.animationElapsedTime, 0.1);
-        } else {
-            this.frame = 0
-            this.animationElapsedTime = 0
-        }
+        this.checkInput(entityManager, keyboardManager, timeManager);
 
         const isCollideWithMap = mapManager.checkMapCollision(this);
 
@@ -134,5 +137,7 @@ export class Player extends Entity {
             }
             this.position = this.prevPosition;
         }
+
+        this.spriteManager.updateFrame(stage.deltaTime)
     }
 }

@@ -1,21 +1,16 @@
+import { SpriteManager } from "$lib/managers/SpriteManager.svelte";
 import { Entity } from "./Entity.svelte";
-
-function getAnimationIndex(animationLength, framesTotal, elapsedTime, frameDuration) {
-    const totalFramesPassed = elapsedTime / frameDuration;
-    return Math.floor(totalFramesPassed) % animationLength;
-}
 
 export class Bomb extends Entity {
     label = 'bomb'
-    frame = $state(0);
-    animationElapsedTime = 0;
+    spriteManager = new SpriteManager('bomb', 3)
 
     update = (stage) => {
-        const { deltaTime } = stage;
+        this.sprite.updateFrame(stage.deltaTime)
+    }
 
-        this.animationElapsedTime += deltaTime;
-        const framesTotal = 3;
-        this.frame = getAnimationIndex(framesTotal, framesTotal, this.animationElapsedTime, 0.1);
+    get sprite() {
+        return this.spriteManager.sprite
     }
 }
 

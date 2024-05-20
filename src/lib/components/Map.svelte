@@ -13,14 +13,14 @@
 			<Sprite
 				name="still"
 				position={[x * tileSize, y * tileSize]}
-				spritePosition={spritePositions.wall.still}
+				spritePosition={spritePositions.wall_still}
 			/>
 		{/if}
 		{#if cell === 0}
 			<Sprite
 				name="brick"
 				position={[x * tileSize, y * tileSize]}
-				spritePosition={spritePositions.wall.brick}
+				spritePosition={spritePositions.wall_brick}
 			/>
 		{/if}
 	{/each}
