@@ -10,7 +10,7 @@ export class Player extends Entity {
     direction = $state('right');
     state = $state('idle');
     spriteManager = new SpriteManager(`player_${this.direction}`, 1)
-    velocity = 300
+    velocity = 150
 
     constructor(position) {
         super(position);
@@ -54,7 +54,9 @@ export class Player extends Entity {
         this.changeState('move', direction)
     }
 
-    checkInput = (entityManager, keyboardManager, timeManager) => {
+    checkInput = (stage) => {
+        const { keyboardManager, entityManager, timeManager, mapManager } = stage.managers;
+
         const key = keyboardManager.getKey();
 
         if (key === ControlKeys.ArrowUp) {
@@ -70,7 +72,7 @@ export class Player extends Entity {
         }
 
         if (key === ControlKeys.Space) {
-            entityManager.spawnBomb(this.position, timeManager)
+            entityManager.spawnBomb(this.boundingBox.middle, timeManager, mapManager)
         }
     }
 
@@ -120,9 +122,9 @@ export class Player extends Entity {
     }
 
     update = (stage) => {
-        const { keyboardManager, entityManager, timeManager, mapManager } = stage.managers;
+        const { mapManager } = stage.managers;
 
-        this.checkInput(entityManager, keyboardManager, timeManager);
+        this.checkInput(stage);
 
         const isCollideWithMap = mapManager.checkMapCollision(this);
 

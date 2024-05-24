@@ -14,6 +14,22 @@ export class MapManager {
         });
     }
 
+    getIndex(position) {
+        const [x, y] = position;
+
+        return [Math.floor(x / 32), Math.floor(y / 32)]
+    }
+
+    adjustPosition = (position) => {
+        const [x, y] = position;
+        return [Math.floor(x / 32) * 32, Math.floor(y / 32) * 32];
+    }
+
+    getTile(position) {
+        const [x, y] = this.getIndex(position);
+        return this.map[y][x];
+    }
+
     getNearbyTiles = (entity) => {
         const { boundingBox } = entity;
         const [x1, y1] = positionToIndex([boundingBox.left, boundingBox.top]);

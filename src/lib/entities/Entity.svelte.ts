@@ -3,7 +3,7 @@ export class Entity {
     layer = 0
 
     constructor(position) {
-        this.id = Date.now() - Math.floor(Math.random() * 100)
+        this.id = Date.now() - Math.floor(Math.random() * 100 * Math.random())
         this.position = position;
     }
 
@@ -16,7 +16,8 @@ export class Entity {
             left: x,
             right: x + 32,
             top: y,
-            bottom: y + 32
+            bottom: y + 32,
+            middle: [x + 16, y + 16]
         };
     }
 }

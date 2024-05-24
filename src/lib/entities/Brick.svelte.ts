@@ -1,7 +1,9 @@
 import { Entity } from "./Entity.svelte";
 
-export class Brick extends Entity {
-    label = 'brick'
+export class BrickExplode extends Entity {
+    label = 'brickExplode'
+
+
 }
 
 

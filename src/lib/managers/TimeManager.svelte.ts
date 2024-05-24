@@ -4,9 +4,7 @@ export class TimeManager {
     time = $state(0)
     deltaTime = 0
     lastFrameTime = 0
-
     timers = {}
-
 
     update = (timestamp) => {
         if (

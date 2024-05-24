@@ -13,9 +13,10 @@ export class SpriteManager {
     totalFrames = 0
     elapsedTime = 0;
 
-    constructor(spriteName, totalFrames) {
+    constructor(spriteName, totalFrames, noRepeat = false) {
         this.spriteName = spriteName
         this.totalFrames = totalFrames
+        this.noRepeat = noRepeat
     }
 
     get sprite() {
@@ -23,6 +24,10 @@ export class SpriteManager {
     }
 
     updateFrame = (deltaTime) => {
+        if (this.noRepeat && this.frame === this.totalFrames - 1) {
+            return this.sprite[this.frame]
+        }
+
         this.elapsedTime += deltaTime;
 
         this.frame = getAnimationIndex(this.totalFrames, this.elapsedTime);
