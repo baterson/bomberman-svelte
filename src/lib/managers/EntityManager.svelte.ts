@@ -1,6 +1,7 @@
 import { Bomb } from '$lib/entities/Bomb.svelte';
 import { Explosion } from '$lib/entities/Explosion.svelte';
 import { Player } from '$lib/entities/Player.svelte';
+import { BrickExplosion } from '$lib/entities/BrickExplosion.svelte';
 
 export class EntityManager {
     entities = $state({});
@@ -18,6 +19,10 @@ export class EntityManager {
         this.entities[entity.id] = entity
     }
 
+    removeEntity = (entity) => {
+        delete this.entities[entity.id]
+    }
+
     spawnBomb = (position, timeManager, mapManager) => {
         const tile = mapManager.getTile(position)
         if (tile) return
@@ -25,17 +30,17 @@ export class EntityManager {
         const bomb = new Bomb(mapManager.adjustPosition(position))
         this.registerEntity(bomb)
 
-        timeManager.setTimer(bomb.id, 1, () => {
+        timeManager.setTimer(bomb.id, 0.3, () => {
             this.spawnExplosion(bomb.boundingBox.middle, 2, mapManager, timeManager)
 
             delete this.entities[bomb.id]
         })
     }
 
-    spawnExplosion = (_p, radius = 5, mapManager, timeManager) => {
+    spawnExplosion = (_p, radius = 3, mapManager, timeManager) => {
         const position = mapManager.adjustPosition(_p)
 
-        this.spawnExplosionPart(position, 'center', timeManager);
+        this.spawnExplosionPart(position, 'center');
 
         const [x, y] = position;
 
@@ -54,20 +59,21 @@ export class EntityManager {
                 ];
 
                 if (i === radius) {
-                    this.spawnExplosionPart(newPos, direction.end, timeManager);
+                    this.spawnExplosionPart(newPos, direction.end);
                 } else {
-                    this.spawnExplosionPart(newPos, direction.side, timeManager);
+                    this.spawnExplosionPart(newPos, direction.side);
                 }
             }
         });
     }
 
-    spawnExplosionPart = (position, side, timeManager) => {
+    spawnExplosionPart = (position, side) => {
         const explosion = new Explosion(position, side);
         this.registerEntity(explosion);
+    }
 
-        timeManager.setTimer(explosion.id, 0.5, () => {
-            delete this.entities[explosion.id]
-        })
+    spawnBrickExplosion = (position) => {
+        const brick = new BrickExplosion(position);
+        this.registerEntity(brick);
     }
 }

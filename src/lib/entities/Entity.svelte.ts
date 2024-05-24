@@ -9,6 +9,10 @@ export class Entity {
 
     update = (stage) => { }
 
+    get sprite() {
+        return this.spriteManager.sprite
+    }
+
     get boundingBox() {
         const [x, y] = this.position;
 
@@ -19,5 +23,9 @@ export class Entity {
             bottom: y + 32,
             middle: [x + 16, y + 16]
         };
+    }
+
+    get origin() {
+        return [this.boundingBox.left, this.boundingBox.top]
     }
 }

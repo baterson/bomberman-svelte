@@ -10,15 +10,25 @@ export class Explosion extends Entity {
         super(position);
         console.log('this', this.id, position);
 
-        this.spriteManager = new SpriteManager(`explosion_${side}`, 4, true)
+        this.spriteManager = new SpriteManager(`explosion_${side}`, 4, 0.25, true)
     }
 
     update = (stage) => {
-        this.spriteManager.updateFrame(stage.deltaTime)
-    }
+        const { timeManager, mapManager, entityManager } = stage.managers;
 
-    get sprite() {
-        return this.spriteManager.sprite
+        if (this.spriteManager.isFinished) {
+            return entityManager.removeEntity(this)
+        }
+
+        const tile = mapManager.getTile(this.boundingBox.middle)
+
+        if (tile === 1 || tile === 0) {
+            entityManager.spawnBrickExplosion(this.origin)
+            mapManager.removeTile(this.boundingBox.middle)
+        }
+        // const
+
+        this.spriteManager.updateFrame(stage.deltaTime)
     }
 }
 

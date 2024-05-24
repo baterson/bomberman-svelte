@@ -27,7 +27,23 @@ export class MapManager {
 
     getTile(position) {
         const [x, y] = this.getIndex(position);
-        return this.map[y][x];
+
+        // todo fix error handling
+        try {
+            return this.map[y][x];
+        } catch {
+            return null
+        }
+    }
+
+    removeTile = (position) => {
+        const [x, y] = this.getIndex(position);
+
+        try {
+            this.map[y][x] = null;
+        } catch {
+            return null
+        }
     }
 
     getNearbyTiles = (entity) => {

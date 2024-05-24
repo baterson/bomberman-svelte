@@ -19,6 +19,7 @@ export const spritePositions = {
     bomb: [[0, 96], [32, 96], [64, 96]],
     wall_still: [96, 96],
     wall_brick: [128, 96],
+    brick_explosion: [[164, 96], [196, 96], [228, 96], [260, 96], [292, 96], [324, 96]],
 
     explosion_end_up: [[64, 128], [228, 128], [64, 292], [228, 292]],
 
