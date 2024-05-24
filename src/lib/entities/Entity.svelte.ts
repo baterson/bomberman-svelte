@@ -1,5 +1,6 @@
 export class Entity {
     position = $state(null);
+    layer = 0
 
     constructor(position) {
         this.id = Date.now() - Math.floor(Math.random() * 100)

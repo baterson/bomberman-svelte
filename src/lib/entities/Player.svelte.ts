@@ -3,6 +3,8 @@ import { ControlKeys } from "$lib/managers/KeyboardManager.svelte";
 import { SpriteManager } from "$lib/managers/SpriteManager.svelte";
 
 export class Player extends Entity {
+    id = 1;
+    layer = 1
     label = 'player';
     prevPosition = $state(null);
     direction = $state('right');

@@ -10,20 +10,22 @@
 
 	onMount(() => {
 		stage = new Stage();
+		console.log(
+			'Object.values(stage.managers.entityManager.entities)',
+			Object.values(stage.managers.entityManager.entities)
+		);
 	});
 </script>
 
 <div class="container">
 	{#if stage}
 		<Map mapManager={stage.managers.mapManager} />
-		<AnimatedSprite
-			z={5}
-			position={stage.managers.entityManager.player.position}
-			spritePosition={stage.managers.entityManager.player.sprite}
-		/>
-
-		{#each stage.managers.entityManager.bombs as bomb}
-			<AnimatedSprite z={1} position={bomb.position} spritePosition={bomb.sprite} />
+		{#each Object.values(stage.managers.entityManager.entities) as entity}
+			<AnimatedSprite
+				layer={entity.layer}
+				position={entity.position}
+				spritePosition={entity.sprite}
+			/>
 		{/each}
 	{/if}
 </div>
