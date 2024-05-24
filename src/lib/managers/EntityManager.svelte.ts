@@ -7,6 +7,7 @@ export class EntityManager {
 
     constructor() {
         this.player = new Player([32, 32]);
+        this.bombs = []
     }
 
     update = (stage) => {

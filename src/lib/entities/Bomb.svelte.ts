@@ -6,7 +6,7 @@ export class Bomb extends Entity {
     spriteManager = new SpriteManager('bomb', 3)
 
     update = (stage) => {
-        this.sprite.updateFrame(stage.deltaTime)
+        this.spriteManager.updateFrame(stage.deltaTime)
     }
 
     get sprite() {

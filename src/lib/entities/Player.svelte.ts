@@ -7,7 +7,7 @@ export class Player extends Entity {
     prevPosition = $state(null);
     direction = $state('right');
     state = $state('idle');
-    spriteManager = new SpriteManager('player_right', 1)
+    spriteManager = new SpriteManager(`player_${this.direction}`, 1)
     velocity = 300
 
     constructor(position) {
@@ -19,23 +19,24 @@ export class Player extends Entity {
         return this.spriteManager.sprite
     }
 
-    changeState = (state) => {
-        if (state === 'move') {
-            this.spriteManager.setSprite(`player_${this.direction}`, 3)
+    changeState = (nextState, nextDirection) => {
+        if (this.state === nextState && nextDirection === this.direction) return;
+
+        this.direction = nextDirection;
+
+        if (nextState === 'move') {
+            this.state = 'move'
+            this.spriteManager = new SpriteManager(`player_${this.direction}`, 3)
         } else {
-            this.spriteManager.setSprite(`player_${this.direction}`, 1)
+            this.state = 'idle'
+            this.spriteManager = new SpriteManager(`player_${this.direction}`, 1)
         }
     }
 
     move = (direction, deltaTime) => {
         const [x, y] = this.position;
-
-        if (direction !== this.direction || this.state === 'idle') {
-            this.spriteManager.setSprite(`player_${this.direction}`, 3)
-        }
-
         this.prevPosition = [x, y];
-        this.direction = direction;
+
         const speed = this.velocity * deltaTime;
 
         if (direction === 'up') {
@@ -48,8 +49,7 @@ export class Player extends Entity {
             this.position = [x - speed, y];
         }
 
-
-        this.state = 'move'
+        this.changeState('move', direction)
     }
 
     checkInput = (entityManager, keyboardManager, timeManager) => {
@@ -64,14 +64,12 @@ export class Player extends Entity {
         } else if (key === ControlKeys.ArrowLeft) {
             this.move('left', timeManager.deltaTime);
         } else {
-            this.state = 'idle'
-            this.spriteManager.setSprite(`player_${this.direction}`, 1)
+            this.changeState('idle', this.direction)
         }
 
         if (key === ControlKeys.Space) {
             entityManager.spawnBomb(this.position, timeManager)
         }
-
     }
 
     getFrontCollisionPoints = () => {
