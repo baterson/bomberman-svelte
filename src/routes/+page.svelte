@@ -1,12 +1,10 @@
 <script>
-	import Sprite from '$lib/components/Sprite.svelte';
 	import AnimatedSprite from '$lib/components/AnimatedSprite.svelte';
 	import Map from '$lib/components/Map.svelte';
 	import { Stage } from '$lib/Stage.svelte';
 	import { onMount } from 'svelte';
-	import { spritePositions } from '$lib/spritePositions';
 
-	let stage;
+	let stage = $state(null);
 
 	onMount(() => {
 		stage = new Stage();
@@ -15,12 +13,16 @@
 			Object.values(stage.managers.entityManager.entities)
 		);
 	});
+
+	const resetStage = () => {
+		stage = new Stage();
+	};
 </script>
 
 <div class="container">
 	{#if stage}
-		<Map mapManager={stage.managers.mapManager} />
-		{#each Object.values(stage.managers.entityManager.entities) as entity}
+		<Map mapManager={stage.mapManager} />
+		{#each Object.values(stage.entityManager.entities) as entity}
 			<AnimatedSprite
 				layer={entity.layer}
 				position={entity.position}
@@ -31,7 +33,11 @@
 </div>
 
 {#if stage}
-	<h1>{stage.managers.timeManager.timeInSeconds}</h1>
+	<h1>{stage.timeManager.time}</h1>
+{/if}
+
+{#if stage && stage.shouldReset}
+	{resetStage()}
 {/if}
 
 <style>

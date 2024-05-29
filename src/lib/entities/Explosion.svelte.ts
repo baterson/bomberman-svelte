@@ -2,15 +2,16 @@ import { SpriteManager } from "$lib/managers/SpriteManager.svelte";
 import { Entity } from "./Entity.svelte";
 
 export class Explosion extends Entity {
-    label = 'exp'
+    // todo name to entity
+    name = 'explosion'
     layer = 2
     // spriteManager = new SpriteManager('bomb', 3)
 
     constructor(position, side) {
         super(position);
-        console.log('this', this.id, position);
+        // console.log('this', this.id, position);
 
-        this.spriteManager = new SpriteManager(`explosion_${side}`, 4, 0.25, true)
+        this.spriteManager = new SpriteManager(`explosion_${side}`, 4, 0.2, true)
     }
 
     update = (stage) => {

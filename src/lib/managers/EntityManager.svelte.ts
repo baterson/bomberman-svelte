@@ -30,8 +30,8 @@ export class EntityManager {
         const bomb = new Bomb(mapManager.adjustPosition(position))
         this.registerEntity(bomb)
 
-        timeManager.setTimer(bomb.id, 0.3, () => {
-            this.spawnExplosion(bomb.boundingBox.middle, 2, mapManager, timeManager)
+        timeManager.setTimer(bomb.id, 0.8, () => {
+            this.spawnExplosion(bomb.boundingBox.middle, 1, mapManager, timeManager)
 
             delete this.entities[bomb.id]
         })
@@ -75,5 +75,15 @@ export class EntityManager {
     spawnBrickExplosion = (position) => {
         const brick = new BrickExplosion(position);
         this.registerEntity(brick);
+    }
+
+    getCollidedEntities = (entity) => {
+        const collidedEntities = [];
+        for (const id in this.entities) {
+            if (this.entities[id] !== entity && entity.checkEntityCollisions(this.entities[id])) {
+                collidedEntities.push(this.entities[id]);
+            }
+        }
+        return collidedEntities;
     }
 }

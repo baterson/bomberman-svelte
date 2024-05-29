@@ -9,7 +9,7 @@ export class BrickExplosion extends Entity {
         super(position);
 
         //todo derive totalsprites from the sprite
-        this.spriteManager = new SpriteManager(`brick_explosion`, 6, 0.25, true)
+        this.spriteManager = new SpriteManager(`brick_explosion`, 6, 0.2, true)
     }
 
     update = (stage) => {

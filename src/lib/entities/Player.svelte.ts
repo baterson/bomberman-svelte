@@ -22,6 +22,13 @@ export class Player extends Entity {
     }
 
     changeState = (nextState, nextDirection) => {
+        if (nextState === 'death') {
+            // todo: use named params for Classes
+            this.state = 'death'
+            this.spriteManager = new SpriteManager(`player_dead`, 6, 0.2, true)
+            return;
+        }
+
         if (this.state === nextState && nextDirection === this.direction) return;
 
         this.direction = nextDirection;
@@ -121,12 +128,42 @@ export class Player extends Entity {
         return undefined;
     }
 
+    handleEntitiesCollision = (entityManager) => {
+        const collidedEntities = entityManager.getCollidedEntities(this).map(entity => entity.name);
+        // console.log('collidedEntities');
+
+        if (collidedEntities.includes('explosion')) {
+            this.changeState('death')
+        }
+    }
+
     update = (stage) => {
-        const { mapManager } = stage.managers;
+        const { mapManager, entityManager } = stage.managers;
+
+        if (this.state === 'death') {
+            // console.log('this.spriteManager.isFinished', this.spriteManager.isFinished);
+
+            this.spriteManager.updateFrame(stage.deltaTime)
+
+
+            if (this.spriteManager.isFinished) {
+                // console.log('....FINISHED.....');
+                stage.reset()
+                // stage.managers.timeManager.reset()
+                // stage.managers.mapManager.reset()
+                // stage.managers.entityManager.reset()
+                return
+            }
+
+            return
+        }
 
         this.checkInput(stage);
 
+        this.handleEntitiesCollision(entityManager)
+
         const isCollideWithMap = mapManager.checkMapCollision(this);
+
 
         if (isCollideWithMap) {
             const tiles = mapManager.getNearbyTiles(this);

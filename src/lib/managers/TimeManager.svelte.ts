@@ -2,9 +2,9 @@ const FRAME_DURATION = 1000 / 60;
 
 export class TimeManager {
     time = $state(0)
-    deltaTime = 0
-    lastFrameTime = 0
-    timers = {}
+    deltaTime = $state(0)
+    lastFrameTime = $state(0)
+    timers = $state({})
 
     update = (timestamp) => {
         if (

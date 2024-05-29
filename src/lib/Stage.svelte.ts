@@ -4,18 +4,31 @@ import { KeyboardManager } from './managers/KeyboardManager.svelte';
 import { TimeManager } from './managers/TimeManager.svelte';
 
 export class Stage {
+    shouldReset = $state(false)
+    timeManager = $state(new TimeManager())
+
     constructor() {
+
         this.mapManager = new MapManager();
         this.keyboardManager = new KeyboardManager();
         this.entityManager = new EntityManager();
-        this.timeManager = new TimeManager();
+        // this.timeManager = new TimeManager();
 
         this.keyboardManager.listenToEvents();
 
         requestAnimationFrame(this.update);
+
+    }
+
+    reset = () => {
+        this.shouldReset = true
     }
 
     update = (timestamp) => {
+        if (this.shouldReset) {
+            return
+        }
+
         const readyForNextFrame = this.timeManager.update(timestamp);
 
         if (readyForNextFrame) {
@@ -29,6 +42,7 @@ export class Stage {
         return this.timeManager.deltaTime
     }
 
+    // todo: remove managers
     get managers() {
         return {
             timeManager: this.timeManager,
